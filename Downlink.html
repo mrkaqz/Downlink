@@ -6,6 +6,10 @@
                     box-sizing: border-box;
                 }
 
+                body {
+                    font-family: Arial;
+                }
+
                 input[type=text], select, textarea{
                     width: 100%;
                     padding: 12px;
@@ -50,11 +54,28 @@
             var sqn = [];
             var tValue = document.getElementById('clockShow').textContent;
             var msgValue = document.getElementById("msg");
+            var s;
             
             // Gen Sqn
                 if (flat == 1) {
-                    sqn.push(180);
+                    s = 180;
+                    sqn.push(s);
                 }
+                //First Bit
+                s = s+0.5*bit;
+                sqn.push(s);
+                
+                // Follow Bits
+                if ( cmd[1] == 1 ) {
+                    s = s+bit;
+                    sqn.push(s);
+                } else {
+                    s = s+0.5*bit;
+                    sqn.push(s);
+                }
+
+
+            
 
             //Count Down
             document.getElementById("Next").innerHTML  = sqn[j]-secTime;
@@ -386,6 +407,9 @@
             }
         }
 
+        function bitupdate() {
+            bit = parseInt(document.getElementById("bitSelect").value);
+        }
         
         </script>
     </head>
@@ -410,7 +434,7 @@
         <form>
             <div>
             <label>Bit Periods:</label>
-                <select onchange="bitupdate()">
+                <select id="bitSelect" onchange="bitupdate()">
                     <option value="18" selected="selected">18s</option>
                     <option value="36">36s</option>
                     <option value="60">60s</option>
