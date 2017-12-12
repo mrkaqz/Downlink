@@ -1,0 +1,475 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+                * {
+                    box-sizing: border-box;
+                }
+
+                input[type=text], select, textarea{
+                    width: 100%;
+                    padding: 12px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                    resize: vertical;
+                }
+
+                .button {
+                    background-color: #4CAF50; /* Green */
+                    border: none;
+                    color: white;
+                    padding: 15px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                }
+
+                .button:hover {
+                    background-color: #45a049;
+                }
+
+                label {
+                    padding: 12px 12px 12px 0;
+                    display: inline-block;
+                }
+
+
+        </style>
+        <script>
+
+        var bit = 18;
+        var flat = 0;
+        var cmd = [0,0,0,0,0,0,0,0,0,0,0,0,0];
+        var j = 0;
+        var secTime = 0; 
+        var t;
+
+        function cmdMag() {
+            var sqn = [];
+            var tValue = document.getElementById('clockShow').textContent;
+            var msgValue = document.getElementById("msg");
+            
+            // Gen Sqn
+                if (flat == 1) {
+                    sqn.push(180);
+                }
+
+            //Count Down
+            document.getElementById("Next").innerHTML  = sqn[j]-secTime;
+
+
+            // UP DOWN Change
+                if (secTime == sqn[j]) {
+
+                    if (msgValue.textContent=="UP") { 
+                            msgValue.innerHTML = "DOWN";
+                        } else if (msgValue.textContent=="DOWN") { 
+                            msgValue.innerHTML = "UP"; 
+                        }
+                    j++;
+                }
+
+            // END
+                if (j > sqn.length-1) {
+                        document.getElementById("msg").innerHTML="END";
+                        document.getElementById("Next").innerHTML  = 0;
+                        clearTimeout(t);
+                    }
+
+            
+
+        }
+
+        function clock () {
+
+            var h1 = document.getElementById('clockShow'),
+                start = document.getElementById('start'),
+                stop = document.getElementById('stop'),
+                clear = document.getElementById('clear'),
+                seconds = 0, minutes = 0, hours = 0;
+                
+
+
+            function add() {
+                seconds++;
+                secTime++
+                if (seconds >= 60) {
+                    seconds = 0;
+                    minutes++;
+                    if (minutes >= 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                }
+                
+                h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+                timer();
+                cmdMag();
+            }
+
+            function timer() {
+                t = setTimeout(add, 1000);
+            }
+
+            //timer();
+
+
+            /* Start button */
+            start.onclick = function () {
+                timer();
+                document.getElementById("msg").innerHTML="UP";
+            }
+
+            /* Stop button 
+            stop.onclick = function() {
+                clearTimeout(t);
+            }
+            */
+
+            /* Clear button */
+            clear.onclick = function() {
+            clearTimeout(t);
+            h1.textContent = "00:00:00";
+            seconds = 0; minutes = 0; hours = 0;
+            document.getElementById("msg").innerHTML="START";
+            j = 0;
+            secTime = 0;
+            document.getElementById("Next").innerHTML  = 0;
+            }
+        }
+
+
+
+        function cmdNameupdate () {
+            var pre = cmd[0]+""+cmd[1]+""+cmd[2]+""+cmd[3]+""+cmd[4]+""+cmd[5]+""+cmd[6];
+            var com = cmd[7]+""+cmd[8]+""+cmd[9]+""+cmd[10]+""+cmd[11]+""+cmd[12];
+            var cmdName = document.getElementById("commandName");
+            var cmdCode = document.getElementById("commandCode");
+
+            if (pre == "0101101") {
+
+                switch(com) {
+                case "000001":
+                    cmdName.innerHTML = "Set TF = 0 degrees, SR = 0%";
+                    break;
+                case "000010":
+                    cmdName.innerHTML = "Set TF = 0 degrees, SR = 25%";
+                    break;
+                case "000100":
+                    cmdName.innerHTML = "Set TF = 0 degrees, SR = 50%";
+                    break;
+                case "000111":
+                    cmdName.innerHTML = "Set TF = 0 degrees, SR = 75%";
+                    break;
+                case "001000":
+                    cmdName.innerHTML = "Set TF = 0 degrees, SR = 100%";
+                    break;
+                case "001011":
+                    cmdName.innerHTML = "Set TF = 18 degrees, SR = 75%";
+                    break;
+                case "001101":
+                    cmdName.innerHTML = "Set TF = 18 degrees, SR = 100%";
+                    break;
+                case "001110":
+                    cmdName.innerHTML = "Set TF = 36 degrees, SR = 50%";
+                    break;
+                case "010000":
+                    cmdName.innerHTML = "Set TF = 36 degrees, SR = 100%";
+                    break;
+                case "010011":
+                    cmdName.innerHTML = "Set TF = 45 degrees, SR = 25%";
+                    break;
+                case "010101":
+                    cmdName.innerHTML = "Set TF = 54 degrees, SR = 75%";
+                    break;
+                case "010110":
+                    cmdName.innerHTML = "Set TF = 72 degrees, SR = 50%";
+                    break;
+                case "011001":
+                    cmdName.innerHTML = "Set TF = 72 degrees, SR = 100%";
+                    break;
+                case "011010":
+                    cmdName.innerHTML = "Set TF = 90 degrees, SR = 25%";
+                    break;
+                case "011100":
+                    cmdName.innerHTML = "Set TF = 90 degrees, SR = 75%";
+                    break;
+                case "011111":
+                    cmdName.innerHTML = "Set TF = 90 degrees, SR = 100%";
+                    break;
+                case "100000":
+                    cmdName.innerHTML = "Set TF = 108 degrees, SR = 50%";
+                    break;
+                case "100011":
+                    cmdName.innerHTML = "Set TF = 108 degrees, SR = 100%";
+                    break;
+                case "100101":
+                    cmdName.innerHTML = "Set TF = 126 degrees, SR = 75%";
+                    break;
+                case "100110":
+                    cmdName.innerHTML = "Set TF = 135 degrees, SR = 25%";
+                    break;
+                case "101001":
+                    cmdName.innerHTML = "Set TF = 144 degrees, SR = 50%";
+                    break;
+                case "101010":
+                    cmdName.innerHTML = "Set TF = 144 degrees, SR = 100%";
+                    break;
+                case "101100":
+                    cmdName.innerHTML = "Set TF = 162 degrees, SR = 75%";
+                    break;
+                case "101111":
+                    cmdName.innerHTML = "Set TF = 180 degrees, SR = 25%";
+                    break;
+                case "110001":
+                    cmdName.innerHTML = "Set TF = 180 degrees, SR = 50%";
+                    break;
+                case "110010":
+                    cmdName.innerHTML = "Set TF = 180 degrees, SR = 75%";
+                    break;
+                case "110100":
+                    cmdName.innerHTML = "Set TF = 180 degrees, SR = 100%";
+                    break;
+                case "110111":
+                    cmdName.innerHTML = "Set TF = 198 degrees, SR = 75%";
+                    break;
+                case "111000":
+                    cmdName.innerHTML = "Set TF = 216 degrees, SR = 50%";
+                    break;
+                case "111011":
+                    cmdName.innerHTML = "Set TF = 216 degrees, SR = 100%";
+                    break;
+                case "111101":
+                    cmdName.innerHTML = "Set TF = 225 degrees, SR = 25%";
+                    break;
+                case "111110":
+                    cmdName.innerHTML = "Set TF = 234 degrees, SR = 75%";
+                    break;
+                default:
+                cmdName.innerHTML = "Unknow Command";
+                }
+
+            } else if (pre == "0110011") {
+
+                switch(com) {
+                case "000001":
+                    cmdName.innerHTML = "Set TF = 252 degrees, SR = 50%";
+                    break;
+                case "000010":
+                    cmdName.innerHTML = "Set TF = 252 degrees, SR = 100%";
+                    break;
+                case "000100":
+                    cmdName.innerHTML = "Set TF = 270 degrees, SR = 25%";
+                    break;
+                case "000111":
+                    cmdName.innerHTML = "Set TF = 270 degrees, SR = 75%";
+                    break;
+                case "001000":
+                    cmdName.innerHTML = "Set TF = 270 degrees, SR = 100%";
+                    break;
+                case "001011":
+                    cmdName.innerHTML = "Set TF = 288 degrees, SR = 50%";
+                    break;
+                case "001101":
+                    cmdName.innerHTML = "Set TF = 288 degrees, SR = 100%";
+                    break;
+                case "001110":
+                    cmdName.innerHTML = "Set TF = 306 degrees, SR = 75%";
+                    break;
+                case "010000":
+                    cmdName.innerHTML = "Set TF = 315 degrees, SR = 25%";
+                    break;
+                case "010011":
+                    cmdName.innerHTML = "Set TF = 324 degrees, SR = 50%";
+                    break;
+                case "010101":
+                    cmdName.innerHTML = "Set TF = 324 degrees, SR = 100%";
+                    break;
+                case "010110":
+                    cmdName.innerHTML = "Set TF = 342 degrees, SR = 75%";
+                    break;
+                case "011001":
+                    cmdName.innerHTML = "Set TF = 342 degrees, SR = 100%";
+                    break;
+                case "011010":
+                    cmdName.innerHTML = "Increase SR by 10%";
+                    break;
+                case "011100":
+                    cmdName.innerHTML = "Decrease SR by 10%";
+                    break;
+                case "011111":
+                    cmdName.innerHTML = "Increase TF by 12 degrees";
+                    break;
+                case "100000":
+                    cmdName.innerHTML = "Decrease TF by 12 degrees";
+                    break;
+                case "100011":
+                    cmdName.innerHTML = "Inclination Hold, No Turn Correction";
+                    break;
+                case "100101":
+                    cmdName.innerHTML = "Inclination Hold, Increment Turn Correction (More Right)";
+                    break;
+                case "100110":
+                    cmdName.innerHTML = "ROP Range 1 (20-100 ft/hr)";
+                    break;
+                case "101001":
+                    cmdName.innerHTML = "Inclination Hold, Decrement Turn Correction (More Left)";
+                    break;
+                case "101010":
+                    cmdName.innerHTML = "ROP Range 2 (80-400 ft/hr)";
+                    break;
+                case "101100":
+                    cmdName.innerHTML = "Nudge Up 0.5 Degree";
+                    break;
+                case "101111":
+                    cmdName.innerHTML = "Nudge Down 0.5 Degree";
+                    break;
+                case "110001":
+                    cmdName.innerHTML = "Downlink Bit Period: 18 s";
+                    break;
+                case "110010":
+                    cmdName.innerHTML = "Downlink Bit Period: 36 s";
+                    break;
+                case "110100":
+                    cmdName.innerHTML = "Not Used";
+                    break;
+                case "110111":
+                    cmdName.innerHTML = "Use Gravity Mode";
+                    break;
+                case "111000":
+                    cmdName.innerHTML = "Use Magnetic Mode";
+                    break;
+                case "111011":
+                    cmdName.innerHTML = "PowerV Unlock/Engange";
+                    break;
+                case "111101":
+                    cmdName.innerHTML = "Not Used";
+                    break;
+                case "111110":
+                    cmdName.innerHTML = "Not Used";
+                    break;
+                default:
+                cmdName.innerHTML = "Unknow Command";
+                }
+
+            } else {
+                cmdName.innerHTML = "Unknow Command";
+            }
+            
+        }
+        
+        function preupdate() {
+            var temp = document.getElementById("precursorSelect").value;
+            for (i = 0; i < 7; i++) {
+                cmd[i] = temp[i];
+                } 
+            document.getElementById("command").innerHTML = cmd[0]+""+cmd[1]+""+cmd[2]+""+cmd[3]+""+cmd[4]+""+cmd[5]+""+cmd[6]+""+cmd[7]+""+cmd[8]+""+cmd[9]+""+cmd[10]+""+cmd[11]+""+cmd[12];
+            cmdNameupdate();
+        }
+        function cmdupdate () {
+            var temp = document.getElementById("cmdSelect").value;
+            for (i = 7; i < 13; i++) {
+                cmd[i] = temp[i-7];
+                } 
+            document.getElementById("command").innerHTML = cmd[0]+""+cmd[1]+""+cmd[2]+""+cmd[3]+""+cmd[4]+""+cmd[5]+""+cmd[6]+""+cmd[7]+""+cmd[8]+""+cmd[9]+""+cmd[10]+""+cmd[11]+""+cmd[12];
+            cmdNameupdate();
+        }
+
+        function flatupdate () {
+            if (document.getElementById("flatSelect").value == 1) {
+                flat = 1;
+            } else {
+                flat = 0;
+            }
+        }
+
+        
+        </script>
+    </head>
+    <body onload="clock()">
+        <div align="center">
+            <h1 id="msg" style="font-size:10vw">START</h1>
+            <span style="font-size:2vw">Next Change in: <span  id="Next">0</span> s </span>
+        </div>
+        <div align="center">
+                <h1 id="clockShow" style="font-size:5vw"><time>00:00:00</time></h1>
+                <button id="start" class="button">Start</button>
+                <!-- <button id="stop" class="button">stop</button> -->
+                <button id="clear" class="button">Abort</button>  
+        </div>
+
+        <br>
+        <div align="center"> 
+        <div id="commandName" style="font-size:5vw">Command</div>
+        <div id="command" style="font-size:3vw"></div>
+        </div>
+        <br>
+        <form>
+            <div>
+            <label>Bit Periods:</label>
+                <select onchange="bitupdate()">
+                    <option value="18" selected="selected">18s</option>
+                    <option value="36">36s</option>
+                    <option value="60">60s</option>
+                  </select> 
+            </div>
+            <div>   
+            <label>Precursor:</label>  
+            <select id="precursorSelect" onchange="preupdate()">
+                <option value="0000000" selected="selected">-</option>
+                <option value="0101101">1</option>
+                <option value="0110011">2</option>
+              </select> 
+            <label>Command:</label>
+              <select id="cmdSelect" onchange="cmdupdate()">
+                <option value="000000" selected="selected">-</option>
+                <option value="000001">0</option>
+                <option value="000010">1</option>
+                <option value="000100">2</option>
+                <option value="000111">3</option>
+                <option value="001000">4</option>
+                <option value="001011">5</option>
+                <option value="001101">6</option>
+                <option value="001110">7</option>
+                <option value="010000">8</option>
+                <option value="010011">9</option>
+                <option value="010101">10</option>
+                <option value="010110">11</option>
+                <option value="011001">12</option>
+                <option value="011010">13</option>
+                <option value="011100">14</option>
+                <option value="011111">15</option>
+                <option value="100000">16</option>
+                <option value="100011">17</option>
+                <option value="100101">18</option>
+                <option value="100110">19</option>
+                <option value="101001">20</option>
+                <option value="101010">21</option>
+                <option value="101100">22</option>
+                <option value="101111">23</option>
+                <option value="110001">24</option>
+                <option value="110010">25</option>
+                <option value="110100">26</option>
+                <option value="110111">27</option>
+                <option value="111000">28</option>
+                <option value="111011">29</option>
+                <option value="111101">30</option>
+                <option value="111110">31</option>
+              </select>
+            </div>   
+            <div>
+              <label>FlatBit:</label>              
+              <select id="flatSelect" onchange="flatupdate()">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+              </select>
+            </div>  
+        </form>
+        <script>          
+                document.getElementById("command").innerHTML = cmd[0]+""+cmd[1]+""+cmd[2]+""+cmd[3]+""+cmd[4]+""+cmd[5]+""+cmd[6]+""+cmd[7]+""+cmd[8]+""+cmd[9]+""+cmd[10]+""+cmd[11]+""+cmd[12];    
+        </script>
+    </body>
+</html>
