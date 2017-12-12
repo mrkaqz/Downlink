@@ -170,6 +170,11 @@
             start.onclick = function () {
                 timer();
                 document.getElementById("msg").innerHTML="UP";
+                document.getElementById("start").disabled = true;
+                document.getElementById("bitSelect").disabled = true;
+                document.getElementById("precursorSelect").disabled = true;
+                document.getElementById("cmdSelect").disabled = true;
+                document.getElementById("flatSelect").disabled = true;
             }
 
             /* Stop button 
@@ -187,6 +192,11 @@
             j = 0;
             secTime = 0;
             document.getElementById("Next").innerHTML  = 0;
+            document.getElementById("start").disabled = false;
+            document.getElementById("bitSelect").disabled = false;
+            document.getElementById("precursorSelect").disabled = false;
+            document.getElementById("cmdSelect").disabled = false;
+            document.getElementById("flatSelect").disabled = false;
             }
         }
 
@@ -524,7 +534,7 @@
                 document.getElementById("command").innerHTML = cmd[0]+""+cmd[1]+""+cmd[2]+""+cmd[3]+""+cmd[4]+""+cmd[5]+""+cmd[6]+""+cmd[7]+""+cmd[8]+""+cmd[9]+""+cmd[10]+""+cmd[11]+""+cmd[12];    
         </script>
         <div style="font-size:1vw" align="center">
-            By Ronnarong Wongmalasit Verion 0.1 Beta 12-Dec-17
+            By Ronnarong Wongmalasit Verion 0.1.1 Beta 12-Dec-17
         </div>
     </body>
 </html>
