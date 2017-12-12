@@ -54,28 +54,49 @@
             var sqn = [];
             var tValue = document.getElementById('clockShow').textContent;
             var msgValue = document.getElementById("msg");
-            var s;
+            var s=0;
             
             // Gen Sqn
                 if (flat == 1) {
-                    s = 180;
-                    sqn.push(s);
+                    s = s+3*bit;
                 }
                 //First Bit
                 s = s+0.5*bit;
                 sqn.push(s);
-                
+
                 // Follow Bits
-                if ( cmd[1] == 1 ) {
-                    s = s+bit;
-                    sqn.push(s);
-                } else {
+                for (k=0;k<12;k++) {
+                    if ( cmd[k] == cmd[k+1] ) {
+                        s = s+0.5*bit;
+                        sqn.push(s);
+                        s = s+0.5*bit;
+                        sqn.push(s);
+                    } else {
+                        s = s+bit;
+                        sqn.push(s);
+                    }
+                }
+
+                //Last Bit
+                if ( cmd[12] == 0 ){
                     s = s+0.5*bit;
                     sqn.push(s);
                 }
 
 
-            
+
+                //Flat Bit
+
+                if (flat == 1) {
+                    if (cmd[12] == 1) {
+                        s = s+3*bit+0.5*bit;
+                        sqn.push(s);
+                    } else {
+                        s = s+3*bit;
+                        sqn.push(s);
+                    }
+                }
+
 
             //Count Down
             document.getElementById("Next").innerHTML  = sqn[j]-secTime;
