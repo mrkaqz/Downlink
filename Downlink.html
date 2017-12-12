@@ -10,6 +10,13 @@
                     font-family: Arial;
                 }
 
+                h1 {
+                    margin-top: 1px;
+                    margin-bottom: 1px;
+                    margin-right: 1px;
+                    margin-left: 1px;
+                }
+
                 input[type=text], select, textarea{
                     width: 100%;
                     padding: 12px;
@@ -44,7 +51,7 @@
         <script>
 
         var bit = 18;
-        var flat = 0;
+        var flat = 1;
         var cmd = [0,0,0,0,0,0,0,0,0,0,0,0,0];
         var j = 0;
         var secTime = 0; 
@@ -436,9 +443,9 @@
     </head>
     <body onload="clock()">
         <div align="center">
-            <h1 id="msg" style="font-size:10vw">START</h1>
-            <span style="font-size:2vw">Next Change in: <span  id="Next">0</span> s </span>
-        </div>
+            <h1 id="msg" style="font-size:20vw">START</h1>
+            <span style="font-size:5vw">Next Change in: <span  id="Next">0</span> s </span>
+        </div><br>
         <div align="center">
                 <h1 id="clockShow" style="font-size:5vw"><time>00:00:00</time></h1>
                 <button id="start" class="button">Start</button>
@@ -508,13 +515,16 @@
             <div>
               <label>FlatBit:</label>              
               <select id="flatSelect" onchange="flatupdate()">
-                    <option value="0">No</option>
-                    <option value="1">Yes</option>
+                <option value="1" selected="selected">Yes</option>
+                <option value="0">No</option>
               </select>
             </div>  
         </form>
         <script>          
                 document.getElementById("command").innerHTML = cmd[0]+""+cmd[1]+""+cmd[2]+""+cmd[3]+""+cmd[4]+""+cmd[5]+""+cmd[6]+""+cmd[7]+""+cmd[8]+""+cmd[9]+""+cmd[10]+""+cmd[11]+""+cmd[12];    
         </script>
+        <div style="font-size:1vw" align="center">
+            By Ronnarong Wongmalasit Verion 0.1 Beta 12-Dec-17
+        </div>
     </body>
 </html>
