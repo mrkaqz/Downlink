@@ -7,7 +7,10 @@
                 }
 
                 body {
-                    font-family: Arial;
+                    font-family: Arial;    
+                    margin: 0 !important;
+                    padding: 0 !important;
+
                 }
 
                 h1 {
@@ -16,7 +19,7 @@
                     margin-right: 1px;
                     margin-left: 1px;
                 }
-
+                
                 input[type=text], select, textarea{
                     width: 100%;
                     padding: 12px;
@@ -25,7 +28,16 @@
                     box-sizing: border-box;
                     resize: vertical;
                 }
+                
+                label {
+                    padding: 15px 2px 2px 5px;
+                    display: inline-block;
+                }
+                
+                
+                select.form-control{display:inline-block}
 
+                
                 .button {
                     background-color: #4CAF50; /* Green */
                     border: none;
@@ -40,11 +52,21 @@
                 .button:hover {
                     background-color: #45a049;
                 }
+                
 
-                label {
-                    padding: 12px 12px 12px 0;
-                    display: inline-block;
+                table, th, td {
+                    border: 0px;
+                    padding:0; 
+                    margin:0;
+                    border-collapse: collapse;
                 }
+
+                td {
+                    border: 0px;
+                    padding:1; 
+                    margin:0;
+                }
+
 
 
         </style>
@@ -56,12 +78,15 @@
         var j = 0;
         var secTime = 0; 
         var t;
+        var confirmCmd;
 
         function cmdMag() {
             var sqn = [];
             var tValue = document.getElementById('clockShow').textContent;
             var msgValue = document.getElementById("msg");
             var s=0;
+            var percent = 1;
+            var change = 0;
             
             // Gen Sqn
                 if (flat == 1) {
@@ -106,7 +131,14 @@
 
 
             //Count Down
-            document.getElementById("Next").innerHTML  = sqn[j]-secTime;
+            change = sqn[j]-secTime
+            document.getElementById("Next").innerHTML  = "Change in " + change + " s";
+
+            //Percent
+            percent = Math.round((secTime/sqn[sqn.length - 1])*100);
+            if ( percent < 1 ) { percent = 1};
+            document.getElementById("progressTable").style.width = percent + "%";
+
 
 
             // UP DOWN Change
@@ -122,8 +154,8 @@
 
             // END
                 if (j > sqn.length-1) {
+                        document.getElementById("Next").innerHTML  = confirmCmd;
                         document.getElementById("msg").innerHTML="END";
-                        document.getElementById("Next").innerHTML  = 0;
                         clearTimeout(t);
                     }
 
@@ -191,16 +223,15 @@
             document.getElementById("msg").innerHTML="START";
             j = 0;
             secTime = 0;
-            document.getElementById("Next").innerHTML  = 0;
+            document.getElementById("Next").innerHTML  = "Count Down";
             document.getElementById("start").disabled = false;
             document.getElementById("bitSelect").disabled = false;
             document.getElementById("precursorSelect").disabled = false;
             document.getElementById("cmdSelect").disabled = false;
             document.getElementById("flatSelect").disabled = false;
+            document.getElementById("progressTable").style.width = "1%";
             }
         }
-
-
 
         function cmdNameupdate () {
             var pre = cmd[0]+""+cmd[1]+""+cmd[2]+""+cmd[3]+""+cmd[4]+""+cmd[5]+""+cmd[6];
@@ -213,102 +244,135 @@
                 switch(com) {
                 case "000001":
                     cmdName.innerHTML = "Set TF = 0 degrees, SR = 0%";
+                    confirmCmd = "[MTF 32/GTF 160]";
                     break;
                 case "000010":
                     cmdName.innerHTML = "Set TF = 0 degrees, SR = 25%";
+                    confirmCmd = "[MTF 33/GTF 161]";
                     break;
                 case "000100":
                     cmdName.innerHTML = "Set TF = 0 degrees, SR = 50%";
+                    confirmCmd = "[MTF 34/GTF 162]";
                     break;
                 case "000111":
                     cmdName.innerHTML = "Set TF = 0 degrees, SR = 75%";
+                    confirmCmd = "[MTF 35/GTF 163]";
                     break;
                 case "001000":
                     cmdName.innerHTML = "Set TF = 0 degrees, SR = 100%";
+                    confirmCmd = "[MTF 36/GTF 164]";
                     break;
                 case "001011":
                     cmdName.innerHTML = "Set TF = 18 degrees, SR = 75%";
+                    confirmCmd = "[MTF 37/GTF 165]";
                     break;
                 case "001101":
                     cmdName.innerHTML = "Set TF = 18 degrees, SR = 100%";
+                    confirmCmd = "[MTF 38/GTF 166]";
                     break;
                 case "001110":
                     cmdName.innerHTML = "Set TF = 36 degrees, SR = 50%";
+                    confirmCmd = "[MTF 39/GTF 167]";
                     break;
                 case "010000":
                     cmdName.innerHTML = "Set TF = 36 degrees, SR = 100%";
+                    confirmCmd = "[MTF 40/GTF 168]";
                     break;
                 case "010011":
                     cmdName.innerHTML = "Set TF = 45 degrees, SR = 25%";
+                    confirmCmd = "[MTF 41/GTF 169]";
                     break;
                 case "010101":
                     cmdName.innerHTML = "Set TF = 54 degrees, SR = 75%";
+                    confirmCmd = "[MTF 42/GTF 170]";
                     break;
                 case "010110":
                     cmdName.innerHTML = "Set TF = 72 degrees, SR = 50%";
+                    confirmCmd = "[MTF 43/GTF 171]";
                     break;
                 case "011001":
                     cmdName.innerHTML = "Set TF = 72 degrees, SR = 100%";
+                    confirmCmd = "[MTF 44/GTF 172]";
                     break;
                 case "011010":
                     cmdName.innerHTML = "Set TF = 90 degrees, SR = 25%";
+                    confirmCmd = "[MTF 45/GTF 173]";
                     break;
                 case "011100":
                     cmdName.innerHTML = "Set TF = 90 degrees, SR = 75%";
+                    confirmCmd = "[MTF 46/GTF 174]";
                     break;
                 case "011111":
                     cmdName.innerHTML = "Set TF = 90 degrees, SR = 100%";
+                    confirmCmd = "[MTF 47/GTF 175]";
                     break;
                 case "100000":
                     cmdName.innerHTML = "Set TF = 108 degrees, SR = 50%";
+                    confirmCmd = "[MTF 48/GTF 176]";
                     break;
                 case "100011":
                     cmdName.innerHTML = "Set TF = 108 degrees, SR = 100%";
+                    confirmCmd = "[MTF 49/GTF 177]";
                     break;
                 case "100101":
                     cmdName.innerHTML = "Set TF = 126 degrees, SR = 75%";
+                    confirmCmd = "[MTF 50/GTF 178]";
                     break;
                 case "100110":
                     cmdName.innerHTML = "Set TF = 135 degrees, SR = 25%";
+                    confirmCmd = "[MTF 51/GTF 179]";
                     break;
                 case "101001":
                     cmdName.innerHTML = "Set TF = 144 degrees, SR = 50%";
+                    confirmCmd = "[MTF 52/GTF 180]";
                     break;
                 case "101010":
                     cmdName.innerHTML = "Set TF = 144 degrees, SR = 100%";
+                    confirmCmd = "[MTF 53/GTF 181]";
                     break;
                 case "101100":
                     cmdName.innerHTML = "Set TF = 162 degrees, SR = 75%";
+                    confirmCmd = "[MTF 54/GTF 182]";
                     break;
                 case "101111":
                     cmdName.innerHTML = "Set TF = 180 degrees, SR = 25%";
+                    confirmCmd = "[MTF 55/GTF 183]";
                     break;
                 case "110001":
                     cmdName.innerHTML = "Set TF = 180 degrees, SR = 50%";
+                    confirmCmd = "[MTF 56/GTF 184]";
                     break;
                 case "110010":
                     cmdName.innerHTML = "Set TF = 180 degrees, SR = 75%";
+                    confirmCmd = "[MTF 56/GTF 185]";
                     break;
                 case "110100":
                     cmdName.innerHTML = "Set TF = 180 degrees, SR = 100%";
+                    confirmCmd = "[MTF 58/GTF 186]";
                     break;
                 case "110111":
                     cmdName.innerHTML = "Set TF = 198 degrees, SR = 75%";
+                    confirmCmd = "[MTF 59/GTF 187]";
                     break;
                 case "111000":
                     cmdName.innerHTML = "Set TF = 216 degrees, SR = 50%";
+                    confirmCmd = "[MTF 60/GTF 188]";
                     break;
                 case "111011":
                     cmdName.innerHTML = "Set TF = 216 degrees, SR = 100%";
+                    confirmCmd = "[MTF 61/GTF 189]";
                     break;
                 case "111101":
                     cmdName.innerHTML = "Set TF = 225 degrees, SR = 25%";
+                    confirmCmd = "[MTF 62/GTF 190]";
                     break;
                 case "111110":
                     cmdName.innerHTML = "Set TF = 234 degrees, SR = 75%";
+                    confirmCmd = "[MTF 63/GTF 191]";
                     break;
                 default:
                 cmdName.innerHTML = "Unknow Command";
+                confirmCmd = "[MTF 00/GTF 00]";
                 }
 
             } else if (pre == "0110011") {
@@ -316,106 +380,140 @@
                 switch(com) {
                 case "000001":
                     cmdName.innerHTML = "Set TF = 252 degrees, SR = 50%";
+                    confirmCmd = "[MTF 64/GTF 192]";
                     break;
                 case "000010":
                     cmdName.innerHTML = "Set TF = 252 degrees, SR = 100%";
+                    confirmCmd = "[MTF 65/GTF 193]";
                     break;
                 case "000100":
                     cmdName.innerHTML = "Set TF = 270 degrees, SR = 25%";
+                    confirmCmd = "[MTF 66/GTF 194]";
                     break;
                 case "000111":
                     cmdName.innerHTML = "Set TF = 270 degrees, SR = 75%";
+                    confirmCmd = "[MTF 67/GTF 195]";
                     break;
                 case "001000":
                     cmdName.innerHTML = "Set TF = 270 degrees, SR = 100%";
+                    confirmCmd = "[MTF 68/GTF 196]";
                     break;
                 case "001011":
                     cmdName.innerHTML = "Set TF = 288 degrees, SR = 50%";
+                    confirmCmd = "[MTF 69/GTF 197]";
                     break;
                 case "001101":
                     cmdName.innerHTML = "Set TF = 288 degrees, SR = 100%";
+                    confirmCmd = "[MTF 70/GTF 198]";
                     break;
                 case "001110":
                     cmdName.innerHTML = "Set TF = 306 degrees, SR = 75%";
+                    confirmCmd = "[MTF 71/GTF 199]";
                     break;
                 case "010000":
                     cmdName.innerHTML = "Set TF = 315 degrees, SR = 25%";
+                    confirmCmd = "[MTF 72/GTF 200]";
                     break;
                 case "010011":
                     cmdName.innerHTML = "Set TF = 324 degrees, SR = 50%";
+                    confirmCmd = "[MTF 73/GTF 201]";
                     break;
                 case "010101":
                     cmdName.innerHTML = "Set TF = 324 degrees, SR = 100%";
+                    confirmCmd = "[MTF 74/GTF 202]";
                     break;
                 case "010110":
                     cmdName.innerHTML = "Set TF = 342 degrees, SR = 75%";
+                    confirmCmd = "[MTF 75/GTF 203]";
                     break;
                 case "011001":
                     cmdName.innerHTML = "Set TF = 342 degrees, SR = 100%";
+                    confirmCmd = "[MTF 76/GTF 204]";
                     break;
                 case "011010":
                     cmdName.innerHTML = "Increase SR by 10%";
+                    confirmCmd = "[MTF 77/GTF 205]";
                     break;
                 case "011100":
                     cmdName.innerHTML = "Decrease SR by 10%";
+                    confirmCmd = "[MTF 78/GTF 206]";
                     break;
                 case "011111":
                     cmdName.innerHTML = "Increase TF by 12 degrees";
+                    confirmCmd = "[MTF 79/GTF 207]";
                     break;
                 case "100000":
                     cmdName.innerHTML = "Decrease TF by 12 degrees";
+                    confirmCmd = "[MTF 80/GTF 208]";
                     break;
                 case "100011":
                     cmdName.innerHTML = "Inclination Hold, No Turn Correction";
+                    confirmCmd = "[MTF 81/GTF 209]";
                     break;
                 case "100101":
                     cmdName.innerHTML = "Inclination Hold, Increment Turn Correction (More Right)";
+                    confirmCmd = "[MTF 82/GTF 210]";
                     break;
                 case "100110":
                     cmdName.innerHTML = "ROP Range 1 (20-100 ft/hr)";
+                    confirmCmd = "[MTF 83/GTF 211]";
                     break;
                 case "101001":
                     cmdName.innerHTML = "Inclination Hold, Decrement Turn Correction (More Left)";
+                    confirmCmd = "[MTF 84/GTF 212]";
                     break;
                 case "101010":
                     cmdName.innerHTML = "ROP Range 2 (80-400 ft/hr)";
+                    confirmCmd = "[MTF 85/GTF 213]";
                     break;
                 case "101100":
                     cmdName.innerHTML = "Nudge Up 0.5 Degree";
+                    confirmCmd = "[MTF 86/GTF 214]";
                     break;
                 case "101111":
                     cmdName.innerHTML = "Nudge Down 0.5 Degree";
+                    confirmCmd = "[MTF 87/GTF 215]";
                     break;
                 case "110001":
                     cmdName.innerHTML = "Downlink Bit Period: 18 s";
+                    confirmCmd = "[MTF 88/GTF 216]";
                     break;
                 case "110010":
                     cmdName.innerHTML = "Downlink Bit Period: 36 s";
+                    confirmCmd = "[MTF 89/GTF 217]";
                     break;
                 case "110100":
-                    cmdName.innerHTML = "Not Used";
+                    cmdName.innerHTML = "Downlink Bit Period: 54 s";
+                    confirmCmd = "[MTF 90/GTF 218]";
                     break;
                 case "110111":
                     cmdName.innerHTML = "Use Gravity Mode";
+                    confirmCmd = "[MTF 91/GTF 219]";
                     break;
                 case "111000":
                     cmdName.innerHTML = "Use Magnetic Mode";
+                    confirmCmd = "[MTF 92/GTF 220]";
                     break;
                 case "111011":
                     cmdName.innerHTML = "PowerV Unlock/Engange";
+                    confirmCmd = "[MTF 93/GTF 221]";
                     break;
                 case "111101":
-                    cmdName.innerHTML = "Not Used";
+                    cmdName.innerHTML = "Hold Inclination Azimuth";
+                    confirmCmd = "[MTF 94/GTF 222]";
                     break;
                 case "111110":
                     cmdName.innerHTML = "Not Used";
+                    confirmCmd = "[MTF 95/GTF 223]";
                     break;
                 default:
                 cmdName.innerHTML = "Unknow Command";
+                confirmCmd = "[MTF 00/GTF 00]";
                 }
 
             } else {
                 cmdName.innerHTML = "Unknow Command";
+                confirmCmd = "[MTF 00/GTF 00]";
             }
             
         }
@@ -452,14 +550,21 @@
         </script>
     </head>
     <body onload="clock()">
+    <div>
+        <table style="width:100%">
+                <tr>
+                    <td style="width:1%" align="right" bgcolor="#010499" id="progressTable"></td>
+                    <td></td> 
+                </tr>
+        </table>
+    </div>
         <div align="center">
             <h1 id="msg" style="font-size:20vw">START</h1>
-            <span style="font-size:5vw">Next Change in: <span  id="Next">0</span> s </span>
+            <span style="font-size:5vw" id="Next">Count Down</span>
         </div><br>
         <div align="center">
                 <h1 id="clockShow" style="font-size:5vw"><time>00:00:00</time></h1>
                 <button id="start" class="button">Start</button>
-                <!-- <button id="stop" class="button">stop</button> -->
                 <button id="clear" class="button">Abort</button>  
         </div>
 
@@ -472,11 +577,11 @@
         <form>
             <div>
             <label>Bit Periods:</label>
-                <select id="bitSelect" onchange="bitupdate()">
-                    <option value="18" selected="selected">18s</option>
-                    <option value="36">36s</option>
-                    <option value="60">60s</option>
-                  </select> 
+            <select id="bitSelect" class="form-control" onchange="bitupdate()">
+                <option value="18" selected="selected">18s</option>
+                <option value="36">36s</option>
+                <option value="60">60s</option>
+              </select> 
             </div>
             <div>   
             <label>Precursor:</label>  
@@ -534,7 +639,7 @@
                 document.getElementById("command").innerHTML = cmd[0]+""+cmd[1]+""+cmd[2]+""+cmd[3]+""+cmd[4]+""+cmd[5]+""+cmd[6]+""+cmd[7]+""+cmd[8]+""+cmd[9]+""+cmd[10]+""+cmd[11]+""+cmd[12];    
         </script>
         <div style="font-size:1vw" align="center">
-            By Ronnarong Wongmalasit Verion 0.1.1 Beta 12-Dec-17
+            By Ronnarong Wongmalasit Version 0.1.2 Beta 13-Dec-17
         </div>
     </body>
 </html>
